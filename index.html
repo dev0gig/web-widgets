@@ -4,65 +4,54 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Widgets</title>
+    <title>Widgets Dashboard</title>
     <link rel="icon" href="https://img.icons8.com/color/512/color-widgets.png" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
+    <!-- GridStack -->
+    <link href="https://cdn.jsdelivr.net/npm/gridstack@10.1.2/dist/gridstack.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gridstack@10.1.2/dist/gridstack-all.js"></script>
 
     <style>
         :root {
-            --bg-color: #f9fafb;
-            --text-color: #111827;
-            --text-color-light: #6b7280;
-            --header-text-color: #111827;
-            --sidebar-bg: #ffffff;
-            --sidebar-border: #e5e7eb;
-            --widget-bg: #ffffff;
-            --widget-border: #e5e7eb;
-            --accent-color: #7c3aed;
-            /* violet-600 - Unified Accent Color */
-            --accent-color-hover: #6d28d9;
-            /* violet-700 */
-            --link-active-bg: #ede9fe;
-            /* violet-100 */
-            --link-active-text: #5b21b6;
-            /* violet-700 */
-            --overlay-bg: rgba(0, 0, 0, 0.7);
-            /* Dark overlay background */
-            --overlay-nav-bg: #ffffff;
-            /* Navigation background inside overlay */
-            --overlay-nav-text: #111827;
-        }
-
-        html[data-theme='dark'] {
-            --bg-color: #171717;
-            --text-color: #fafafa;
-            --text-color-light: #a3a3a3;
-            --header-text-color: #fafafa;
-            --sidebar-bg: #262626;
-            --sidebar-border: #404040;
-            --widget-bg: #262626;
-            --widget-border: #404040;
-            --link-active-bg: #4c1d95;
-            /* violet-900 */
-            --link-active-text: #ddd6fe;
-            /* violet-200 */
+            --bg-color: #4b5563;
+            /* gray-600 */
+            --text-color: #f9fafb;
+            /* gray-50 */
+            --text-color-light: #d1d5db;
+            /* gray-300 */
+            --header-text-color: #f9fafb;
+            /* gray-50 */
+            --sidebar-bg: #1f2937;
+            /* gray-800 */
+            --sidebar-border: #4b5563;
+            /* gray-600 */
+            --widget-bg: transparent;
+            --widget-border: transparent;
+            --link-active-bg: #4b5563;
+            /* gray-600 */
+            --link-active-text: #f9fafb;
+            /* gray-50 */
             --overlay-bg: rgba(0, 0, 0, 0.8);
-            --overlay-nav-bg: #262626;
-            --overlay-nav-text: #fafafa;
+            --overlay-nav-bg: #1f2937;
+            /* gray-800 */
+            --overlay-nav-text: #f9fafb;
+            /* gray-50 */
         }
 
         body {
             font-family: 'Ubuntu', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            overflow-x: hidden;
+            overflow: hidden;
+            /* Prevent body scroll */
         }
 
-        /* --- Benutzerdefinierte Scrollbar-Stile (von AuriMea/MemoMea übernommen) --- */
+        /* --- Custom Scrollbar --- */
         ::-webkit-scrollbar {
             width: 12px;
         }
@@ -73,7 +62,6 @@
 
         ::-webkit-scrollbar-thumb {
             background-color: var(--sidebar-border);
-            /* Changed to sidebar-border for better contrast */
             border-radius: 10px;
             border: 3px solid var(--bg-color);
         }
@@ -97,56 +85,45 @@
             color: var(--link-active-text);
         }
 
-        .sidebar-link.active {
+        .sidebar-link.active-link {
             background-color: var(--link-active-bg);
             color: var(--link-active-text);
             font-weight: 600;
         }
 
-        .sidebar-link.active i {
-            color: var(--link-active-text);
+        /* --- GridStack Styles --- */
+        .grid-stack {
+            background-color: var(--bg-color);
         }
 
-        #widget-container {
-            background-color: var(--widget-bg);
-            border: 1px solid var(--widget-border);
+        .grid-stack-item-content {
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .grid-stack-item-content iframe {
+            width: 100%;
+            height: 100%;
+            flex-grow: 1;
+            border: 0;
+            border-radius: 0.75rem;
         }
 
-        #widget-iframe {
-            transition: opacity 0.3s ease-in-out;
-        }
 
-        /* Full-Screen Overlay Styles */
+        /* --- Overlay Styles --- */
         #fullscreen-overlay {
             background-color: var(--overlay-bg);
             transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
         }
 
-        #overlay-nav {
+        #overlay-nav-container {
             background-color: var(--overlay-nav-bg);
             color: var(--overlay-nav-text);
             transition: transform 0.3s ease-in-out;
-        }
-
-        .overlay-link {
-            color: var(--text-color);
-            /* Use text-color for overlay links */
-            transition: background-color 0.2s, color 0.2s;
-        }
-
-        .overlay-link:hover {
-            background-color: var(--link-active-bg);
-            color: var(--link-active-text);
-        }
-
-        .overlay-link.active {
-            background-color: var(--link-active-bg);
-            color: var(--link-active-text);
-            font-weight: 600;
-        }
-
-        .overlay-link.active i {
-            color: var(--link-active-text);
         }
     </style>
 </head>
@@ -158,7 +135,9 @@
             <div class="px-6 py-4">
                 <h2 class="text-2xl font-bold" style="color: var(--header-text-color);">Widgets</h2>
             </div>
-            <nav id="widget-nav-desktop" class="flex-1 px-4 space-y-2"></nav>
+            <p class="px-6 pb-4 text-sm" style="color: var(--text-color-light);">Klicke, um ein Widget zum Dashboard
+                hinzuzufügen.</p>
+            <nav id="widget-nav-desktop" class="flex-1 px-4 space-y-2 overflow-y-auto"></nav>
         </aside>
 
         <!-- Main Content -->
@@ -166,26 +145,15 @@
             <!-- Mobile Header -->
             <header class="lg:hidden flex justify-between items-center p-4 border-b"
                 style="border-color: var(--sidebar-border); background-color: var(--sidebar-bg);">
-                <h2 id="mobile-widget-title" class="text-xl font-bold" style="color: var(--header-text-color);">Wähle
-                    ein Widget</h2>
+                <h2 class="text-xl font-bold" style="color: var(--header-text-color);">Dashboard</h2>
                 <button id="open-overlay-btn" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <span class="material-symbols-outlined" style="color: var(--text-color);">menu</span>
+                    <span class="material-symbols-outlined" style="color: var(--text-color);">add</span>
                 </button>
             </header>
 
-            <!-- Content Area -->
-            <div id="content-area" class="flex-1 overflow-y-auto p-4 md:p-8">
-                <div id="widget-container"
-                    class="w-full h-[85vh] rounded-2xl shadow-lg flex items-center justify-center p-1">
-                    <iframe id="widget-iframe" class="w-full h-full rounded-xl opacity-0 hidden"
-                        title="Widget-Anzeige"></iframe>
-                    <div id="placeholder-text" class="text-center">
-                        <span class="material-symbols-outlined text-6xl mx-auto mb-4" style="color: var(--text-color-light);">dashboard</span>
-                        <h3 class="text-xl font-semibold">Willkommen bei den Widgets!</h3>
-                        <p class="mt-2" style="color: var(--text-color-light);">Wähle ein Widget aus der Seitenleiste
-                            (Desktop) oder dem Menü (Mobile), um es hier anzuzeigen.</p>
-                    </div>
-                </div>
+            <!-- Grid Area -->
+            <div class="flex-1 overflow-y-auto p-2 md:p-4">
+                <div class="grid-stack"></div>
             </div>
         </main>
     </div>
@@ -193,13 +161,14 @@
     <!-- Full-Screen Overlay Navigation for Mobile -->
     <div id="fullscreen-overlay"
         class="fixed inset-0 z-50 flex flex-col items-center justify-center opacity-0 invisible">
-        <div id="overlay-nav"
-            class="relative w-full max-w-md mx-auto p-6 rounded-lg shadow-2xl transform scale-95 transition-transform duration-300 ease-out">
+        <div id="overlay-nav-container"
+            class="relative w-full max-w-md mx-auto p-6 rounded-lg shadow-2xl transform scale-95">
             <button id="close-overlay-btn"
                 class="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
                 <span class="material-symbols-outlined" style="color: var(--text-color);">close</span>
             </button>
-            <h2 class="text-2xl font-bold mb-6 text-center" style="color: var(--header-text-color);">Widgets</h2>
+            <h2 class="text-2xl font-bold mb-6 text-center" style="color: var(--header-text-color);">Widget hinzufügen
+            </h2>
             <nav id="widget-nav-overlay" class="flex flex-col space-y-3"></nav>
         </div>
     </div>
@@ -217,164 +186,137 @@
             ];
 
             const desktopNav = document.getElementById('widget-nav-desktop');
-            const widgetIframe = document.getElementById('widget-iframe');
-            const placeholder = document.getElementById('placeholder-text');
-            const mobileWidgetTitle = document.getElementById('mobile-widget-title');
-
-            const fullscreenOverlay = document.getElementById('fullscreen-overlay');
             const overlayNav = document.getElementById('widget-nav-overlay');
+            const fullscreenOverlay = document.getElementById('fullscreen-overlay');
             const openOverlayBtn = document.getElementById('open-overlay-btn');
             const closeOverlayBtn = document.getElementById('close-overlay-btn');
 
-            let currentTheme = 'light';
-            let activeWidgetId = null;
-
-            // --- Theme Handling ---
-            window.addEventListener('message', (event) => {
-                if (event.data === 'set-theme-dark') {
-                    document.documentElement.dataset.theme = 'dark';
-                    currentTheme = 'dark';
-                    updateActiveWidgetTheme();
-                } else if (event.data === 'set-theme-light') {
-                    document.documentElement.dataset.theme = 'light';
-                    currentTheme = 'light';
-                    updateActiveWidgetTheme();
+            // --- GridStack Initialization ---
+            const grid = GridStack.init({
+                float: false, // true will float items up, false will pack them down
+                cellHeight: '80px',
+                minRow: 1,
+                margin: 10,
+                handle: '.grid-stack-item-content', // Allows moving from anywhere on the widget
+                draggable: {
+                    handle: '.grid-stack',
+                    cancel: '.grid-stack-item'
                 }
             });
 
-            function updateActiveWidgetTheme() {
-                if (widgetIframe.contentWindow) {
-                    widgetIframe.contentWindow.postMessage(`set-theme-${currentTheme}`, '*');
+            // --- Widget Management ---
+            function toggleWidget(widgetId) {
+                const widgetNode = grid.engine.nodes.find(n => n.id === widgetId);
+
+                if (widgetNode) {
+                    grid.removeWidget(widgetNode.el);
+                    updateNavButtonState(widgetId, false);
+                } else {
+                    const widget = widgets.find(w => w.id === widgetId);
+                    if (!widget) return;
+
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'grid-stack-item-content';
+                    
+                    const iframe = document.createElement('iframe');
+                    iframe.src = widget.src;
+                    iframe.title = widget.title;
+                    iframe.dataset.widgetId = widget.id;
+                    contentDiv.appendChild(iframe);
+
+                    grid.addWidget(contentDiv, { w: 4, h: 5, minW: 2, minH: 3, content: contentDiv.innerHTML, id: widgetId });
+                    updateNavButtonState(widgetId, true);
                 }
             }
 
-            // --- Widget Navigation for Desktop Sidebar ---
-            function createDesktopNavButton(widget) {
+            // --- Navigation Rendering ---
+            function createNavButton(widget, isOverlay = false) {
                 const button = document.createElement('button');
-                button.className = 'sidebar-link w-full flex items-center p-3 rounded-lg text-left';
+                button.className = isOverlay
+                    ? 'overlay-link w-full flex items-center p-4 rounded-lg text-left text-lg'
+                    : 'sidebar-link w-full flex items-center p-3 rounded-lg text-left';
                 button.dataset.widgetId = widget.id;
                 button.innerHTML = `
                     <span class="material-symbols-outlined mr-3">${widget.icon}</span>
                     <span>${widget.title}</span>
                 `;
-                button.addEventListener('click', () => loadWidget(widget.id));
-                return button;
-            }
-
-            // --- Widget Navigation for Full-Screen Overlay ---
-            function createOverlayNavItem(widget) {
-                const button = document.createElement('button');
-                button.className = 'overlay-link w-full flex items-center p-4 rounded-lg text-left text-lg';
-                button.dataset.widgetId = widget.id;
-                button.innerHTML = `
-                    <span class="material-symbols-outlined mr-4">${widget.icon}</span>
-                    <span>${widget.title}</span>
-                `;
                 button.addEventListener('click', () => {
-                    loadWidget(widget.id);
-                    closeOverlay(); // Close overlay after selecting a widget
+                    toggleWidget(widget.id);
+                    if (isOverlay) {
+                        closeOverlay();
+                    }
                 });
                 return button;
             }
 
             function renderNav() {
                 desktopNav.innerHTML = '';
-                overlayNav.innerHTML = ''; // Clear previous items
-
+                overlayNav.innerHTML = '';
                 widgets.forEach(widget => {
-                    desktopNav.appendChild(createDesktopNavButton(widget));
-                    overlayNav.appendChild(createOverlayNavItem(widget)); // Add to overlay nav
+                    desktopNav.appendChild(createNavButton(widget, false));
+                    overlayNav.appendChild(createNavButton(widget, true));
                 });
             }
 
-            function loadWidget(widgetId) {
-                const widget = widgets.find(w => w.id === widgetId);
-                if (!widget) return;
+            // --- Layout Persistence ---
+            grid.on('change', function (event, items) {
+                const serializedData = grid.save(true, true); // Save content and metadata
+                localStorage.setItem('grid-layout', JSON.stringify(serializedData));
+            });
 
-                placeholder.classList.add('hidden');
-                widgetIframe.classList.remove('hidden');
-                widgetIframe.classList.add('opacity-0');
-
-                widgetIframe.src = widget.src;
-
-                widgetIframe.onload = () => {
-                    updateActiveWidgetTheme();
-                    widgetIframe.classList.remove('opacity-0');
-                };
-
-                widgetIframe.onerror = () => {
-                    widgetIframe.classList.add('opacity-0');
-                    widgetIframe.classList.add('hidden');
-                    placeholder.classList.remove('hidden');
-                    placeholder.innerHTML = `
-                        <div class="text-center p-4">
-                            <span class="material-symbols-outlined text-6xl mx-auto mb-4 text-red-500">error</span>
-                            <h3 class="text-xl font-semibold">Fehler beim Laden</h3>
-                            <p class="mt-2" style="color: var(--text-color-light);">Das Widget unter <code>${widget.src}</code> konnte nicht gefunden werden. Bitte überprüfe den Dateipfad.</p>
-                        </div>
-                    `;
-                };
-
-                mobileWidgetTitle.textContent = widget.title; // Update mobile header title
-                setActiveLink(widget.id);
-                localStorage.setItem('lastActiveWidget', widget.id);
-                activeWidgetId = widget.id;
+            function loadLayout() {
+                const serializedDataString = localStorage.getItem('grid-layout');
+                if (serializedDataString) {
+                    const serializedData = JSON.parse(serializedDataString);
+                    // Clear existing widgets before loading
+                    grid.removeAll();
+                    grid.load(serializedData);
+                    // Re-attach onload events for themeing
+                    grid.getGridItems().forEach(item => {
+                        const iframe = item.el.querySelector('iframe');
+                        if (iframe) {
+                            updateNavButtonState(iframe.dataset.widgetId, true);
+                        }
+                    });
+                } else {
+                    // Load default widgets if no layout is saved
+                    toggleWidget('widget-clock');
+                    toggleWidget('widget-weather');
+                }
             }
 
-            function setActiveLink(widgetId) {
-                // For Desktop Sidebar
-                document.querySelectorAll('#desktop-sidebar .sidebar-link').forEach(link => {
-                    link.classList.toggle('active', link.dataset.widgetId === widgetId);
-                });
-                // For Full-Screen Overlay Navigation
-                document.querySelectorAll('#widget-nav-overlay .overlay-link').forEach(item => {
-                    item.classList.toggle('active', item.dataset.widgetId === widgetId);
+            function updateNavButtonState(widgetId, isActive) {
+                document.querySelectorAll(`[data-widget-id="${widgetId}"]`).forEach(button => {
+                    button.classList.toggle('active-link', isActive);
                 });
             }
 
-            // --- Full-Screen Overlay Functions ---
+            // --- Mobile Overlay Functions ---
             function openOverlay() {
                 fullscreenOverlay.classList.remove('invisible', 'opacity-0');
-                fullscreenOverlay.classList.add('opacity-100');
-                // Animate the inner nav panel slightly
-                document.getElementById('overlay-nav').classList.remove('scale-95');
-                document.getElementById('overlay-nav').classList.add('scale-100');
-                document.body.style.overflow = 'hidden'; // Prevent scrolling body when overlay is open
+                document.getElementById('overlay-nav-container').classList.remove('scale-95');
             }
 
             function closeOverlay() {
-                fullscreenOverlay.classList.remove('opacity-100');
                 fullscreenOverlay.classList.add('opacity-0');
-                // Animate the inner nav panel back
-                document.getElementById('overlay-nav').classList.remove('scale-100');
-                document.getElementById('overlay-nav').classList.add('scale-95');
-                // Use a timeout to hide visibility after transition
+                document.getElementById('overlay-nav-container').classList.add('scale-95');
                 setTimeout(() => {
                     fullscreenOverlay.classList.add('invisible');
-                    document.body.style.overflow = ''; // Restore body scrolling
-                }, 300); // Match transition duration
+                }, 300);
             }
 
-            // Event Listeners for Overlay
             openOverlayBtn.addEventListener('click', openOverlay);
             closeOverlayBtn.addEventListener('click', closeOverlay);
-            // Close overlay if clicking on the dimmed background
             fullscreenOverlay.addEventListener('click', (event) => {
                 if (event.target === fullscreenOverlay) {
                     closeOverlay();
                 }
             });
 
-
             // --- Initialization ---
             function initialize() {
                 renderNav();
-                const lastWidget = localStorage.getItem('lastActiveWidget');
-                if (lastWidget) {
-                    loadWidget(lastWidget);
-                } else if (widgets.length > 0) {
-                    loadWidget(widgets[0].id); // Load the first widget by default
-                }
+                loadLayout();
             }
 
             initialize();

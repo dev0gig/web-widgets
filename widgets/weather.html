@@ -14,6 +14,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
     <style>
         body {
             overflow: hidden;
@@ -87,6 +89,20 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--text-color, #FFFFFF);
+        }
+
+        #current-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 96px;
+        }
+
+        .forecast-day .w-12 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
         }
     </style>
 </head>
@@ -307,29 +323,23 @@
             }
 
             getWeatherDetails(code) {
-                // Diese Funktion ordnet Wettercodes Beschreibungen, Icons, Hintergrundfarben und Textfarben zu.
-                // Die Icons werden nun als <img>-Tags mit dem angegebenen Pfad zurückgegeben.
-                const iconPath = '../../../assets/weather-icons/'; // Basis-Pfad zu den Icons
-
-                // Hilfsfunktion zur Erstellung des <img>-Tags
-                const createIconTag = (filename, altText) => {
-                    // Der onerror-Handler zeigt ein Platzhalterbild an, falls das Icon nicht gefunden wird.
-                    // Der CSS-Filter 'invert(100%)' kehrt die Farben des Icons um.
-                    return `<img src="${iconPath}${filename}" alt="${altText}" onerror="this.src='https://placehold.co/40x40/cccccc/ffffff?text=X'" class="w-full h-full object-contain" style="filter: invert(100%);">`;
+                // Diese Funktion ordnet Wettercodes Beschreibungen, Icons (als Material Symbols), Hintergrundfarben und Textfarben zu.
+                const createIconTag = (iconName) => {
+                    // Erzeugt ein Span-Element für Material Symbols. Die Farbe wird über die CSS-Variable --text-color gesteuert.
+                    return `<span class="material-symbols-outlined">${iconName}</span>`;
                 };
 
-                // Mapping der Wettercodes zu Icon-Dateinamen und Stile
-                if ([0, 1].includes(code)) return { description: 'Sonnig', icon: createIconTag('sunny.svg', 'Sonnig'), color: '#4A90E2', textColor: '#FFFFFF' };
-                if ([2].includes(code)) return { description: 'Teils bewölkt', icon: createIconTag('partly-cloudy.svg', 'Teils bewölkt'), color: '#5472d3', textColor: '#FFFFFF' };
-                if ([3].includes(code)) return { description: 'Bedeckt', icon: createIconTag('cloudy.svg', 'Bedeckt'), color: '#7E8B99', textColor: '#FFFFFF' };
-                if ([45, 48].includes(code)) return { description: 'Nebel', icon: createIconTag('fog.svg', 'Nebel'), color: '#B0BEC5', textColor: '#263238' };
-                if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) return { description: 'Regen', icon: createIconTag('rain.svg', 'Regen'), color: '#0288D1', textColor: '#FFFFFF' };
-                if ([71, 73, 75, 85, 86].includes(code)) return { description: 'Schnee', icon: createIconTag('snow.svg', 'Schnee'), color: '#FFFFFF', textColor: '#37474F' };
-                if ([95, 96, 99].includes(code)) return { description: 'Gewitter', icon: createIconTag('thunderstorm.svg', 'Gewitter'), color: '#455A64', textColor: '#FFFFFF' };
+                // Mapping der Wettercodes zu Icon-Namen und Stilen
+                if ([0, 1].includes(code)) return { description: 'Sonnig', icon: createIconTag('sunny'), color: '#4A90E2', textColor: '#FFFFFF' };
+                if ([2].includes(code)) return { description: 'Teils bewölkt', icon: createIconTag('partly_cloudy_day'), color: '#5472d3', textColor: '#FFFFFF' };
+                if ([3].includes(code)) return { description: 'Bedeckt', icon: createIconTag('cloudy'), color: '#7E8B99', textColor: '#FFFFFF' };
+                if ([45, 48].includes(code)) return { description: 'Nebel', icon: createIconTag('foggy'), color: '#B0BEC5', textColor: '#263238' };
+                if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) return { description: 'Regen', icon: createIconTag('rainy'), color: '#0288D1', textColor: '#FFFFFF' };
+                if ([71, 73, 75, 85, 86].includes(code)) return { description: 'Schnee', icon: createIconTag('cloudy_snowing'), color: '#FFFFFF', textColor: '#37474F' };
+                if ([95, 96, 99].includes(code)) return { description: 'Gewitter', icon: createIconTag('thunderstorm'), color: '#455A64', textColor: '#FFFFFF' };
+                
                 // Standard-Rückgabe für unbekannte Codes
-                // Stellen Sie sicher, dass Sie eine 'unknown.svg' Datei im Verzeichnis haben,
-                // oder passen Sie den Fallback-Text an.
-                return { description: 'Unbekannt', icon: createIconTag('unknown.svg', 'Unbekannt'), color: '#7E8B99', textColor: '#FFFFFF' };
+                return { description: 'Unbekannt', icon: createIconTag('question_mark'), color: '#7E8B99', textColor: '#FFFFFF' };
             }
 
             showLoading(isLoading) {
